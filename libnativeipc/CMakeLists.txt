@@ -1,7 +1,7 @@
 
 include(GenerateExportHeader)
 
-add_library(nativeipc)
+add_library(nativeipc STATIC)
 
 target_compile_features(nativeipc PRIVATE cxx_std_17)
 
@@ -57,10 +57,10 @@ endif()
 
 target_include_directories(nativeipc PUBLIC
   include/nativeipc
+  ${libuv_SOURCE_DIR}/include
   )
 
-target_link_libraries(nativeipc PRIVATE
-  CONAN_PKG::libuv)
+target_link_libraries(nativeipc PRIVATE uv_a.lib)
 
 target_compile_definitions(nativeipc PRIVATE)
 
@@ -89,7 +89,7 @@ install(DIRECTORY include
   )
 
 if(MSVC)
-  install(FILES ${CMAKE_BINARY_DIR}/bin/nativeipc.pdb
+  install(FILES ${CMAKE_BINARY_DIR}/libnativeipc/${CMAKE_BUILD_TYPE}/nativeipc.pdb
 	CONFIGURATIONS Debug RelWithDebInfo
 	DESTINATION lib
 	)
