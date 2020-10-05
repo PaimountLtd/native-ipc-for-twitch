@@ -87,10 +87,3 @@ install(TARGETS nativeipc
 install(DIRECTORY include
   DESTINATION ${CMAKE_INSTALL_PREFIX}
   )
-
-if(MSVC)
-  install(FILES ${CMAKE_BINARY_DIR}/libnativeipc/${CMAKE_BUILD_TYPE}/nativeipc.pdb
-	CONFIGURATIONS Debug RelWithDebInfo
-	DESTINATION lib
-	)
-endif()
