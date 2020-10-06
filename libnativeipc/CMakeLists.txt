@@ -57,10 +57,13 @@ endif()
 
 target_include_directories(nativeipc PUBLIC
   include/nativeipc
-  ${libuv_SOURCE_DIR}/include
+  ../libuv/include
   )
 
 target_link_libraries(nativeipc PRIVATE uv_a.lib)
+
+add_dependencies(nativeipc uv_a)
+add_dependencies(nativeipc uv)
 
 target_compile_definitions(nativeipc PRIVATE)
 
