@@ -1,11 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmakeUtils;")
-include(setup)
 
 project(nativeipc)
 
-setup_project()
-
+add_subdirectory(libuv)
 add_subdirectory(libnativeipc)
 
 if(BUILD_TESTING)

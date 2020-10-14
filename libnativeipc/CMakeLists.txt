@@ -1,7 +1,7 @@
 
 include(GenerateExportHeader)
 
-add_library(nativeipc)
+add_library(nativeipc STATIC)
 
 target_compile_features(nativeipc PRIVATE cxx_std_17)
 
@@ -50,17 +50,22 @@ target_sources(nativeipc PRIVATE
 
 if(MSVC)
   target_sources(nativeipc PRIVATE $<IF:$<BOOL:${BUILD_SHARED_LIBS}>, src/platform/win/dllmain.cpp,>)
-  target_compile_options(nativeipc PRIVATE /W4 /WX)
+  target_compile_options(nativeipc PRIVATE /W4 /WX /MT)
 else()
   target_compile_options(nativeipc PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()
 
 target_include_directories(nativeipc PUBLIC
   include/nativeipc
+  ../libuv/include
   )
 
-target_link_libraries(nativeipc PRIVATE
-  CONAN_PKG::libuv)
+target_link_libraries(nativeipc PRIVATE uv_a.lib)
+
+add_dependencies(nativeipc uv_a)
+add_dependencies(nativeipc uv)
+
+target_compile_options(uv_a PRIVATE /MT)
 
 target_compile_definitions(nativeipc PRIVATE)
 
@@ -87,10 +92,3 @@ install(TARGETS nativeipc
 install(DIRECTORY include
   DESTINATION ${CMAKE_INSTALL_PREFIX}
   )
-
-if(MSVC)
-  install(FILES ${CMAKE_BINARY_DIR}/bin/nativeipc.pdb
-	CONFIGURATIONS Debug RelWithDebInfo
-	DESTINATION lib
-	)
-endif()
