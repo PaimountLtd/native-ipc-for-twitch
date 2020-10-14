@@ -50,7 +50,7 @@ target_sources(nativeipc PRIVATE
 
 if(MSVC)
   target_sources(nativeipc PRIVATE $<IF:$<BOOL:${BUILD_SHARED_LIBS}>, src/platform/win/dllmain.cpp,>)
-  target_compile_options(nativeipc PRIVATE /W4 /WX)
+  target_compile_options(nativeipc PRIVATE /W4 /WX /MT)
 else()
   target_compile_options(nativeipc PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()
@@ -64,6 +64,8 @@ target_link_libraries(nativeipc PRIVATE uv_a.lib)
 
 add_dependencies(nativeipc uv_a)
 add_dependencies(nativeipc uv)
+
+target_compile_options(uv_a PRIVATE /MT)
 
 target_compile_definitions(nativeipc PRIVATE)
 
